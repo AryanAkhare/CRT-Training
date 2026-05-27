@@ -1,0 +1,78 @@
+{
+  "info": {
+    "name": "User Authentication Service",
+    "_postman_id": "f2d6d4f3-3e7f-4af3-9a87-9f0d0f1d8a11",
+    "description": "Requests for the UserAuthenticationService microservice.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"sam@gmail.com\",\n  \"password\": \"111\"\n}"
+        },
+        "url": {
+          "raw": "{{authBaseUrl}}/api/v1/user",
+          "host": [
+            "{{authBaseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Login User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"sam@gmail.com\",\n  \"password\": \"111\"\n}"
+        },
+        "url": {
+          "raw": "{{authBaseUrl}}/api/v1/login",
+          "host": [
+            "{{authBaseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "login"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json.token) {",
+              "  pm.environment.set('authToken', json.token);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ]
+}

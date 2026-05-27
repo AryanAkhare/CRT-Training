@@ -1,0 +1,120 @@
+{
+  "info": {
+    "name": "User Movie Service",
+    "_postman_id": "8f5f1b7e-1f1e-4fbe-8c5b-6a5de2d17a21",
+    "description": "Requests for the UserMovieService microservice.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"sam@gmail.com\",\n  \"userName\": \"Sammy\",\n  \"password\": \"111\",\n  \"phoneNumber\": \"8756473635\",\n  \"movieList\": []\n}"
+        },
+        "url": {
+          "raw": "{{movieBaseUrl}}/api/v1/register",
+          "host": [
+            "{{movieBaseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "register"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Add Movie To User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"movieId\": \"m001\",\n  \"movieName\": \"Shawshank Redemption\",\n  \"genre\": \"DRAMA\",\n  \"leadActors\": [\"Robert\", \"DeNiro\"],\n  \"director\": \"Frank\",\n  \"yearOfRelease\": 1994,\n  \"rating\": 8\n}"
+        },
+        "url": {
+          "raw": "{{movieBaseUrl}}/api/v1/user/{{userEmail}}/movie",
+          "host": [
+            "{{movieBaseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "{{userEmail}}",
+            "movie"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get User Movies",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{movieBaseUrl}}/api/v1/user/{{userEmail}}/movies",
+          "host": [
+            "{{movieBaseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "{{userEmail}}",
+            "movies"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete Movie From User",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{movieBaseUrl}}/api/v1/user/{{userEmail}}/{{movieId}}",
+          "host": [
+            "{{movieBaseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "{{userEmail}}",
+            "{{movieId}}"
+          ]
+        }
+      }
+    }
+  ]
+}

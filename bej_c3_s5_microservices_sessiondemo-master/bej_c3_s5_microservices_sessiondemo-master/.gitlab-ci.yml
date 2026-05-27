@@ -1,0 +1,33 @@
+image: maven:latest
+stages:
+  - test
+  - build
+services:
+  - mysql:5.5
+  - mongo:3.4-jessie
+variables:
+  # Configure mysql environment variables (https://hub.docker.com/_/mysql/)
+  MYSQL_DATABASE: "movie_db"
+  MYSQL_URL: "jdbc:mysql://mysql/movie_db"
+  MYSQL_USER: "app_root"
+  MYSQL_PASSWORD: "root"
+  MYSQL_ROOT_PASSWORD: "root"
+  MONGO_DATABASENAME: "usermovie_db"
+  MONGO_URL: "mongodb://mongo/usermovie_db"
+cache:
+  paths:
+    - .m2/repository
+    - target
+maven-test:
+  stage: test
+  script: "mvn test"
+  tags:
+    - MYREPOS_PROD_RUNNER
+maven-build:
+  stage: build
+  script: 'mvn package'
+  tags:
+    - MYREPOS_PROD_RUNNER
+  artifacts:
+    paths:
+      - target/*.jar

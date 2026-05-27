@@ -1,0 +1,418 @@
+{
+	"info": {
+		"_postman_id": "4df58d62-11c7-4d04-bf26-f81d114ea0f9",
+		"name": "Airline Booking System - Microservices (Detailed)",
+		"description": "A comprehensive Postman collection to test and assert the Airline Booking System microservices including Eureka Server, Flight Service, Seat Service, Payment Service, and Ticket Service. Every request contains automated tests to check status codes and response bodies.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Eureka Server",
+			"item": [
+				{
+					"name": "Eureka Dashboard Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is HTML dashboard\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/html\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{eureka_url}}",
+							"host": [
+								"{{eureka_url}}"
+							]
+						},
+						"description": "Checks the status of the Eureka Service Registry dashboard at port 8761."
+					},
+					"response": []
+				}
+			],
+			"description": "Requests relating to Eureka Server registry dashboard."
+		},
+		{
+			"name": "Flight Service",
+			"item": [
+				{
+					"name": "Get All Flights",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is an array of flights\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"    pm.expect(jsonData).to.include(\"AI101 - Pune to Delhi\");",
+									"    pm.expect(jsonData).to.include(\"AI202 - Mumbai to Bangalore\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{flight_url}}/flights",
+							"host": [
+								"{{flight_url}}"
+							],
+							"path": [
+								"flights"
+							]
+						},
+						"description": "Retrieves the list of available flights from the Flight Service."
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Flight",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Flight created successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"object\");",
+									"    pm.expect(jsonData.flightNumber).to.eql(\"AI303\");",
+									"    pm.expect(jsonData.origin).to.eql(\"Chennai\");",
+									"    pm.expect(jsonData.destination).to.eql(\"Kolkata\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"flightNumber\": \"AI303\",\n  \"origin\": \"Chennai\",\n  \"destination\": \"Kolkata\"\n}"
+						},
+						"url": {
+							"raw": "{{flight_url}}/flights",
+							"host": [
+								"{{flight_url}}"
+							],
+							"path": [
+								"flights"
+							]
+						},
+						"description": "Creates a new flight in the MySQL database."
+					},
+					"response": []
+				}
+			],
+			"description": "Requests for managing and querying flights."
+		},
+		{
+			"name": "Seat Service",
+			"item": [
+				{
+					"name": "Get All Seats",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is an array of seats\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"    pm.expect(jsonData).to.include(\"A1\");",
+									"    pm.expect(jsonData).to.include(\"B1\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{seat_url}}/seats",
+							"host": [
+								"{{seat_url}}"
+							],
+							"path": [
+								"seats"
+							]
+						},
+						"description": "Retrieves the list of available seats from the Seat Service."
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Seat",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Seat created successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"object\");",
+									"    pm.expect(jsonData.seatNumber).to.eql(\"C1\");",
+									"    pm.expect(jsonData.isBooked).to.eql(false);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"seatNumber\": \"C1\",\n  \"isBooked\": false\n}"
+						},
+						"url": {
+							"raw": "{{seat_url}}/seats",
+							"host": [
+								"{{seat_url}}"
+							],
+							"path": [
+								"seats"
+							]
+						},
+						"description": "Creates a new seat in the MySQL database."
+					},
+					"response": []
+				}
+			],
+			"description": "Requests for query seat configurations."
+		},
+		{
+			"name": "Payment Service",
+			"item": [
+				{
+					"name": "Process Payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response body is PAYMENT SUCCESS\", function () {",
+									"    pm.response.to.have.body(\"PAYMENT SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{payment_url}}/payments/pay",
+							"host": [
+								"{{payment_url}}"
+							],
+							"path": [
+								"payments",
+								"pay"
+							]
+						},
+						"description": "Submits a dummy payment request directly to the Payment Service."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Payments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Payments are retrieved successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{payment_url}}/payments",
+							"host": [
+								"{{payment_url}}"
+							],
+							"path": [
+								"payments"
+							]
+						},
+						"description": "Retrieves the list of payment transactions from the MySQL database."
+					},
+					"response": []
+				}
+			],
+			"description": "Requests relating to transaction processing."
+		},
+		{
+			"name": "Ticket Service",
+			"item": [
+				{
+					"name": "Book a Ticket (Eureka + OpenFeign)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Ticket is booked successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"object\");",
+									"    pm.expect(jsonData.ticketId).to.be.a(\"number\");",
+									"    pm.expect(jsonData.status).to.eql(\"BOOKED\");",
+									"    pm.expect(jsonData.paymentStatus).to.eql(\"PAYMENT SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{ticket_url}}/tickets/book",
+							"host": [
+								"{{ticket_url}}"
+							],
+							"path": [
+								"tickets",
+								"book"
+							]
+						},
+						"description": "Performs a booking transaction. This internally calls the Payment Service through Eureka Discovery using OpenFeign and stores the ticket in MySQL database."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Tickets",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Tickets are retrieved successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ticket_url}}/tickets",
+							"host": [
+								"{{ticket_url}}"
+							],
+							"path": [
+								"tickets"
+							]
+						},
+						"description": "Retrieves the list of booked tickets from the MySQL database."
+					},
+					"response": []
+				}
+			],
+			"description": "Requests for managing flight bookings."
+		}
+	],
+	"variable": [
+		{
+			"key": "eureka_url",
+			"value": "http://localhost:8761",
+			"type": "string"
+		},
+		{
+			"key": "flight_url",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "seat_url",
+			"value": "http://localhost:8082",
+			"type": "string"
+		},
+		{
+			"key": "payment_url",
+			"value": "http://localhost:8083",
+			"type": "string"
+		},
+		{
+			"key": "ticket_url",
+			"value": "http://localhost:8084",
+			"type": "string"
+		}
+	]
+}
